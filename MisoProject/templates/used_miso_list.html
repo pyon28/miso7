@@ -1,0 +1,34 @@
+<!-- used_miso_list.html -->
+{% extends 'base.html' %}
+{% block content %}
+    <head>
+        <title>Used Miso List</title>
+    </head>
+    <h2>Used Miso List</h2>
+    <ul>
+        {% for entry in used_miso_list %}
+            <li>
+                <a href="{% url 'accounts:used_miso_detail' entry.item.id %}">
+                    <p>Item: {{ entry.item.name }}</p>
+                </a>
+                <p>Timestamp: {{ entry.timestamp }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+
+
+{% comment %} <!-- used_miso_list.html -->
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Used Miso List</h2>
+    <ul>
+        {% for entry in used_miso_list %}
+            <li>
+                <p>Item: {{ entry.item.name }}</p>
+                <p>Timestamp: {{ entry.timestamp }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %} {% endcomment %}

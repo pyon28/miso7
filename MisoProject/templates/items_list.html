@@ -1,0 +1,74 @@
+<!-- items_list.html -->
+{% extends 'base.html' %}
+{% block content %}
+    <h2>items_list</h2>
+    <form method="post" action="{% url 'accounts:items_list' %}">
+      {% csrf_token %}
+
+      {% for item in items %}
+          <div>
+              <a href="{% url 'accounts:used_miso_detail' item.id %}">{{ item.name }}</a>
+              <input type="checkbox" name="selected_items" value="{{ item.id }}">
+          </div>
+      {% endfor %}
+
+      <button type="submit">Submit Selected Items</button>
+  </form>
+{% endblock %}
+
+
+
+
+{% comment %} <!-- items_list.html -->
+{% extends 'base.html' %}
+{% block content %}
+    <h2>items_list</h2>
+    <form method="post" action="{% url 'accounts:items_list' %}">
+      {% csrf_token %}
+
+      {% for item in items %}
+          <div>
+              <input type="checkbox" name="selected_items" value="{{ item.id }}">
+              <label>{{ item.name }}</label>
+          </div>
+      {% endfor %}
+
+      <button type="submit">Submit Selected Items</button>
+  </form>
+{% endblock %}
+
+ {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+<html>
+{% comment %} <head>
+    <title>Items List</title>
+</head> {% endcomment %}
+{% comment %} <body>
+
+<h1>Items List</h1>
+
+{% for item in items %}
+    <div>
+        <h2>{{ item.name }}</h2>
+        <img src="{{ item.image.url }}" alt="{{ item.name }}">
+        <p>Thoughts: {{ item.thoughts }}</p>
+        <p>Taste Rating: {{ item.taste_rating }}</p>
+        <p>Appearance Rating: {{ item.appearance_rating }}</p>
+        <p>Used Miso: {{ item.used_miso }}</p>
+    </div>
+{% endfor %}
+
+</body>
+</html> 
+{% endblock %} {% endcomment %}
