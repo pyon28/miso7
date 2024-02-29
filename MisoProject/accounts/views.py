@@ -7,13 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
-from .models import Items, UsedMisoList
-from .forms import UsedMisoListForm
-from .models import UsedMisoDetail
+from django.urls import reverse_lazy
 from django.views import View
-from .forms import UsedMisoDetailForm, ItemsForm
-
-
+from .forms import ItemForm
+from django.views.generic import UpdateView, DetailView, CreateView, DeleteView, ListView
+from .models import Item
 
 
 class HomeView(TemplateView):
@@ -22,17 +20,32 @@ class HomeView(TemplateView):
 class RegistUserView(CreateView):
     template_name = 'regist.html'
     form_class = RegistForm
-
+    success_url = reverse_lazy('accounts:user_login')
+   
 
 class UserLoginView(LoginView):
     template_name = 'user_login.html'
     authentication_form = UserLoginForm
 
     def form_valid(self, form):
-        remember = form.cleaned_data['remember']
+        remember = form.cleaned_data.get('remember', False)  # フィールドが存在しない場合はデフォルト値 False を使用する
         if remember:
             self.request.session.set_expiry(1200000)
         return super().form_valid(form)
+
+
+
+
+#元のコード
+# class UserLoginView(LoginView):
+#     template_name = 'user_login.html'
+#     authentication_form = UserLoginForm
+
+#     def form_valid(self, form):
+#         remember = form.cleaned_data['remember']
+#         if remember:
+#             self.request.session.set_expiry(1200000)
+#         return super().form_valid(form)
 
 
 class UserLogoutView(LogoutView):
@@ -46,164 +59,86 @@ class UserView(LoginRequiredMixin, TemplateView):
         return super().dispatch(*args, **kwargs)
     
     
-@method_decorator(login_required, name='dispatch')    
-class ItemsRegistView(View):
+class ItemsRegistView(CreateView):
     template_name = 'item_regist.html'
-
-    def get(self, request, *args, **kwargs):
-        form = ItemsForm(user=request.user)
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = ItemsForm(request.POST, request.FILES, user=request.user)
-        if form.is_valid():
-            item = form.save(commit=False)
-            item.save()
-            return redirect('accounts:items_list')
-
-        return render(request, self.template_name, {'form': form})
+    form_class = ItemForm
     
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # ログインしたユーザー情報をフォームに渡す
+        return kwargs
 
-@method_decorator(login_required, name='dispatch')
-class ItemsListView(View):
+    def get_success_url(self):
+        return reverse_lazy('accounts:items_list')
+    
+ 
+
+    
+class ItemsListView(ListView):
     template_name = 'items_list.html'
+    model = Item
+    
+    def get_queryset(self):
+        # ログインユーザーのみのアイテムリストを取得
+        user_items = Item.objects.filter(user=self.request.user)
+        return user_items
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
 
-    def get(self, request, *args, **kwargs):
-        items = Items.objects.filter(used_miso=False)
-        return render(request, self.template_name, {'items': items})
+        # ユーザーのアイテムリスト
+        user_items = Item.objects.filter(user=user)
 
-    def post(self, request, *args, **kwargs):
-        selected_items = request.POST.getlist('selected_items')
-        for item_id in selected_items:
-            item = Items.objects.get(id=item_id)
-            item.used_miso = True
-            item.save()
-            UsedMisoList.objects.create(item=item)
-        return redirect('accounts:items_list')
+        # チェックされたアイテムリスト
+        checked_items = user_items.filter(used_miso=True)
+
+        # used_miso_list に表示するアイテムリスト
+        context['used_miso_list'] = checked_items
+        return context
 
 
-@method_decorator(login_required, name='dispatch')
-class UsedMisoListView(View):
+    
+class UsedMisoListView(ListView):
     template_name = 'used_miso_list.html'
+    model = Item
 
-    def get(self, request, *args, **kwargs):
-        used_miso_list = UsedMisoList.objects.filter(item__user=request.user)
-        print(used_miso_list)  # コンソールに出力
-        return render(request, self.template_name, {'used_miso_list': used_miso_list})
+    def get_queryset(self):
+        user = self.request.user
+        queryset = Item.objects.filter(user=user, used_miso=True)
+        
+        # ログ出力
+        print("取得されるアイテム:", queryset)
+        
+        return queryset
+    
     
 
-class UsedMisoDetailView(View):
-    template_name = 'used_miso_detail.html'
+class ItemsDetailView(DetailView):
+   template_name = 'items_detail.html'
+   model = Item
+   
+   
+class ItemsDeleteView(DeleteView):
+    template_name = 'items_delete.html'
+    model = Item
+    success_url = reverse_lazy('accounts:items_list')  
+   
+   
 
-    def get(self, request, *args, **kwargs):
-        form = UsedMisoDetailForm(prefix='used_miso_detail_form')
-        return render(request, self.template_name, {'form': form})
+class ItemsUpdateView(UpdateView):
+    template_name = 'items_update.html'
+    model = Item
+    fields = ('name', 'image', 'used_miso', 'thoughts', 'taste_rating', 'appearance_rating',)
+    success_url = reverse_lazy('accounts:items_list')
+ 
+    def form_valid(self, form):
+        item = form.save(commit=False)
+        if 'image' in self.request.FILES:
+            item.image = self.request.FILES['image']
+        item.save()
+        return super().form_valid(form)
+    
+    
+    
 
-    def post(self, request, *args, **kwargs):
-        used_miso_detail_form = UsedMisoDetailForm(request.POST, prefix='used_miso_detail_form')
-
-        if used_miso_detail_form.is_valid():
-            used_miso_detail_data = used_miso_detail_form.cleaned_data
-            
-            # Item フォームから item_id 取得
-            item_id = used_miso_detail_form.cleaned_data['item']
-
-            try:
-                # ここで Item インスタンスを取得
-               used_miso_detail_data['item'] = Items.objects.get(pk=item_id)
-            except Items.DoesNotExist:
-                # Item インスタンスが存在しない場合の処理
-                error_message = '指定された Item インスタンスが存在しません。'
-                return render(request, self.template_name, {'used_miso_detail_form': used_miso_detail_form, 'error_message': error_message})
-
-            # Item インスタンスを保存
-            used_miso_detail_data['item'].save() 
-
-            # UsedMisoDetail モデルに保存
-            UsedMisoDetail.objects.create(user=request.user, **used_miso_detail_data)
-
-            return redirect('used_miso_list')  # 保存後に一覧ページなどにリダイレクト
-
-        return render(request, self.template_name, {'used_miso_detail_form': used_miso_detail_form})
-
-
-# @method_decorator(login_required, name='dispatch')
-# class UsedMisoDetailView(View):
-#     template_name = 'used_miso_detail.html'
-
-#     def get(self, request, *args, **kwargs):
-#         form = UsedMisoDetailForm(prefix='used_miso_detail_form')
-#         return render(request, self.template_name, {'form': form})
-
-#     def post(self, request, *args, **kwargs):
-#         used_miso_detail_form = UsedMisoDetailForm(request.POST, prefix='used_miso_detail_form')
-
-#         if used_miso_detail_form.is_valid():
-#             used_miso_detail_data = used_miso_detail_form.cleaned_data
-            
-#             # Item フォームから item_id 取得
-#             item = used_miso_detail_form.cleaned_data['item']
-            
-#             # UsedMisoDetail モデルに保存
-#             UsedMisoDetail.objects.create(user=request.user, item=item, **used_miso_detail_data)
-
-#             return redirect('used_miso_list')  # 保存後に一覧ページなどにリダイレクト
-
-#         return render(request, self.template_name, {'used_miso_detail_form': used_miso_detail_form})
-
-
-
-# @method_decorator(login_required, name='dispatch')
-# class UsedMisoDetailView(View):
-#     template_name = 'used_miso_detail.html'
-
-#     def get(self, request, *args, **kwargs):
-#         form = UsedMisoDetailForm(prefix='used_miso_detail_form')
-#         items_form = ItemsForm(prefix='items_form')
-#         return render(request, self.template_name, {'form': form, 'items_form': items_form})
-
-#     def post(self, request, *args, **kwargs):
-#         used_miso_detail_form = UsedMisoDetailForm(request.POST, prefix='used_miso_detail_form')
-#         items_form = ItemsForm(request.POST, prefix='items_form')
-
-#         if used_miso_detail_form.is_valid() and items_form.is_valid():
-#             used_miso_detail_data = used_miso_detail_form.cleaned_data
-#             items_data = items_form.cleaned_data
-
-#             # Items モデルに保存（既存のインスタンスを再利用）
-#             item = get_object_or_404(Items, id=items_data['id'], user=request.user)
-
-#             # UsedMisoDetail モデルに保存
-#             used_miso_detail_data['item'] = item
-#             UsedMisoDetail.objects.create(**used_miso_detail_data)
-
-#             return redirect('used_miso_list')  # 保存後に一覧ページなどにリダイレクト
-
-#         return render(request, self.template_name, {'used_miso_detail_form': used_miso_detail_form, 'items_form': items_form})
-
-
-#元のコード
-# @method_decorator(login_required, name='dispatch')
-# class UsedMisoDetailView(View):
-#     template_name = 'used_miso_detail.html'
-
-#     def get(self, request, *args, **kwargs):
-#         form = UsedMisoDetailForm(prefix='used_miso_detail_form')
-#         return render(request, self.template_name, {'form': form})
-
-#     def post(self, request, *args, **kwargs):
-#         used_miso_detail_form = UsedMisoDetailForm(request.POST, prefix='used_miso_detail_form')
-#         items_form = ItemsForm(request.POST, prefix='items_form')
-
-#         if used_miso_detail_form.is_valid() and items_form.is_valid():
-#             used_miso_detail_data = used_miso_detail_form.cleaned_data
-#             items_data = items_form.cleaned_data
-
-#             # Items モデルに保存
-#             item = Items.objects.create(**items_data)
-
-#             # UsedMisoDetail モデルに保存
-#             used_miso_detail_data['item'] = item
-#             UsedMisoDetail.objects.create(**used_miso_detail_data)
-
-#         return render(request, self.template_name, {'used_miso_detail_form': used_miso_detail_form, 'items_form': items_form})

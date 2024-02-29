@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="centered-container">
+    <h2>商品の編集</h2>
+    <form method="post" enctype="multipart/form-data" style="display: inline-block;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="button-group">
+            <button type="submit" class="button">登録</button>
+            <a href="{% url 'accounts:items_list' %}" class="button-inline button">戻る</a>
+        </div>
+    </form> 
+</div>
+{% endblock %}

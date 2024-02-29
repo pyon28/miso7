@@ -1,0 +1,114 @@
+<!-- items_detail.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div style="text-align: center;">
+  <h2>商品の詳細</h2>
+  <p>{{ items.date }}</p>
+  <p>{{ items.name }}</p>
+  <a href="{% url 'accounts:items_update' object.pk %}" class="button">編集</a>
+  <a href="{% url 'accounts:items_delete' object.pk %}" class="button">削除</a>
+</div>
+{% endblock %}
+
+
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+
+
+<body>
+  <h2>商品の詳細</h2>
+  <p>{{ items.date }}</p>
+  <p>{{ items.name }}</p>
+  <a href="{% url 'accounts:items_update' object.pk %}">編集</a>
+  <a href="{% url 'accounts:items_delete' object.pk %}">削除</a>
+</body>
+
+{% endblock %} {% endcomment %}
+
+
+
+
+
+
+{% comment %} <!-- used_miso_detail/templates/used_miso_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+ <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+    <p>メモ・感想: {{ form.thoughts }}</p>
+    <p>味: {{ form.taste_rating }}</p>
+    <p>見た目: {{ form.appearance_rating }}</p>
+      
+      <button type="submit">登録</button>
+    </form>
+
+    <br>
+    <a href="{% url 'accounts:used_miso_list' %}">使った味噌一覧に戻る</a>
+  </div>
+{% endblock %}
+ {% endcomment %}
+
+
+
+{% comment %} <!-- used_miso_detail/templates/used_miso_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  {% comment %} <div class="mt-5 text-center"> {% endcomment %}
+    {% comment %} <h3>使った味噌詳細</h3> 
+    <br> {# 1行空けるための改行タグを追加 #}
+    {% comment %} <p>商品名: {{ form.item }}</p> 
+    <p>メモ・感想: {{ form.thoughts }}</p>
+    <p>味: {{ form.taste_rating }}</p>
+    <p>見た目: {{ form.appearance_rating }}</p>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.items_form.name }} {# ItemsForm の name フィールドの表示 #}
+      {{ form.items_form.image }} {# ItemsForm の image フィールドの表示 #}
+      {% for field in form.items_form %}
+        {# ItemsForm の各フィールドの表示 #}
+        <p>{{ field.label_tag }} {{ field }}</p> 
+      {% endfor %}
+
+      <button type="submit">登録</button>
+    </form>
+
+    <br>
+    <a href="{% url 'accounts:used_miso_list' %}">使った味噌一覧に戻る</a>
+  </div>
+{% endblock %} {% endcomment %}
+
+
+
+{% comment %} <!-- used_miso_detail/templates/used_miso_detail.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="mt-5">
+    <h2>Used Miso Detailを作成</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+       {{ form.used_miso_detail_form.as_p }}
+      {{ form.items_form.name }} {# ItemsForm の name フィールドの表示 #}
+      {{ form.items_form.image }} {# ItemsForm の image フィールドの表示 #}
+      {% for field in form.items_form %}
+        {# ItemsForm の各フィールドの表示 #}
+        <p>{{ field.label_tag }} {{ field }}</p>
+      {% endfor %}
+      {% for field in form %}
+       {# UsedMisoDetailForm の各フィールドの表示 #}
+       {% if field.name != 'items_form' %}
+          <p>{{ field.label_tag }} {{ field }}</p>
+        {% endif %}
+      {% endfor %}
+      <button type="submit">Used Miso Detailを作成</button>
+    </form>
+    <br>
+    <a href="{% url 'accounts:used_miso_list' %}">Used Miso Listに戻る</a>
+  </div>
+{% endblock %} {% endcomment %}

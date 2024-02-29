@@ -1,8 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="POST">
-   {% csrf_token %}
-   {{ form.as_p }}
-   <input type="submit" value="ユーザ登録">
-</form>
+<div style="text-align: center; margin-top: 30vh;">
+    <div style="display: inline-block;"> 
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="ユーザ登録" class="button">
+            
+            {% if form.errors %}
+                {% for error in form.non_field_errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+        </form>
+    </div>
+</div>
 {% endblock %}
+
+
+
+
+
+
+
+

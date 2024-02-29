@@ -1,32 +1,38 @@
-<!-- item_regist.html -->
-
 {% extends 'base.html' %}
-
 {% block content %}
-  <div class="mt-5">
-    <h2>Create a New Items</h2>
+<div class="centered-container">
+    <h2>商品登録</h2>
     <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Create Items</button>
+   
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button">登録</button>
+
+       
     </form>
-    <br>
-    <a href="{% url 'accounts:items_list' %}">Back to Items List</a>
-  </div>
+     
+</div>
 {% endblock %}
+ 
 
 
-{% comment %} <!-- item_regist.html -->
 
-{% extends 'base.html' %}
 
-{% block content %}
-  <h2>Create a New Items</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Create Items</button>
-  </form>
-  <br>
-  <a href="{% url 'accounts:items_list' %}">Back to Items List</a>
-{% endblock %} {% endcomment %}
+
+ 
+ 
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+

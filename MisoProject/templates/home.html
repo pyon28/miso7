@@ -1,32 +1,23 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
-  <style>
-    .center-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 90vh; /* 画面の高さいっぱいに表示する場合 */
-    }
+<!-- home.html -->
 
-    .center-text {
-      text-align: center;
-    }
-  </style>
+{% extends 'base.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="'static/css/styles.css'">
+
+      
+
 
   <div class="center-container">
-    <div class="center-text">
+    <div class="center-text"> 
+  
       <h1>味噌記録アプリ</h1>
-    </div>
-  </div>
+   
+     </div>
+  </div> 
 {% endblock %}
 
 
 
 
 
-{% comment %} {% extends 'base.html' %}
-{% block content %}
-<h2>味噌記録</h2>
-{% endblock %} {% endcomment %}

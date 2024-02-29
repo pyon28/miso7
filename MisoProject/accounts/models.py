@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
@@ -43,31 +44,19 @@ class Users(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return reverse_lazy('accounts:home')
 
-class Items(models.Model):
+class Item(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE, null=False)  
-    name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='item_images/')
-    used_miso = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(verbose_name='商品名', max_length=40)
+    image = models.ImageField(verbose_name='画像', upload_to='item_images/', blank=True, null=True)  
+    used_miso = models.BooleanField(verbose_name='使った味噌', default=False)
+    thoughts = models.TextField(verbose_name='メモ・感想', null=True, blank=True)
+    taste_rating = models.IntegerField(verbose_name='味', choices=[(1, '1'), (2, '2'), (3, '3')], null=True, blank=True)
+    appearance_rating = models.IntegerField(verbose_name='見た目', choices=[(1, '1'), (2, '2'), (3, '3')], null=True, blank=True)
+    created_at = models.DateTimeField(verbose_name='作成日時', default=timezone.now)
+    updated_at = models.DateTimeField(verbose_name='編集日時', blank=True, null=True)
    
 
     def __str__(self):
         return self.name
     
-class UsedMisoList(models.Model):
-    item = models.ForeignKey(Items, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"{self.item.name} - {self.timestamp}"
-    
-class UsedMisoDetail(models.Model):
-    user = models.ForeignKey(Users, on_delete=models.CASCADE)
-    item = models.ForeignKey(Items, on_delete=models.CASCADE, related_name='used_miso_details')
-    thoughts = models.TextField(null=True, blank=True)
-    taste_rating = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3')], null=True, blank=True)
-    appearance_rating = models.IntegerField(choices=[(1, '1'), (2, '2'), (3, '3')], null=True, blank=True)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.item.name} - {self.timestamp}"

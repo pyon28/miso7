@@ -1,0 +1,20 @@
+<!-- items_delete.html -->
+{% extends 'base.html' %}
+{% block content %}
+<div class="centered-container">
+    <h2>商品の削除</h2>
+    <form method="post" style="display: inline-block;">     
+            {% csrf_token %}
+            <p>{{ item.date }} {{ item.name }} を削除します</p>
+            <div class="button-group">
+                <input type="submit" value="削除" class="button">
+                <a href="{% url 'accounts:items_list' %}"  class="button">戻る</a>
+            </div>
+    </form>   
+</div>
+{% endblock %}
+
+
+
+
+

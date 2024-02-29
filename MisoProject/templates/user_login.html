@@ -1,11 +1,14 @@
 {% extends 'base.html' %}
    
 {% block content %}
+<div style="text-align: center; margin-top: 30vh;">
+    <div style="display: inline-block;"> 
 <form method="POST">
    {% csrf_token %}
    {{ form.as_p }}
    <input type="hidden" name="next" value="{{ request.GET.next }}">
-   <input type="submit" value="ログイン">
+   <input type="submit" value="ログイン" class="button">
+
 </form>
  
 {% endblock %}

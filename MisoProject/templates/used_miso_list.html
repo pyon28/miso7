@@ -1,34 +1,45 @@
-<!-- used_miso_list.html -->
+ <!-- used_miso_list.html -->
 {% extends 'base.html' %}
 {% block content %}
-    <head>
-        <title>Used Miso List</title>
-    </head>
-    <h2>Used Miso List</h2>
-    <ul>
-        {% for entry in used_miso_list %}
-            <li>
-                <a href="{% url 'accounts:used_miso_detail' entry.item.id %}">
-                    <p>Item: {{ entry.item.name }}</p>
-                </a>
-                <p>Timestamp: {{ entry.timestamp }}</p>
-            </li>
-        {% endfor %}
-    </ul>
+<div class="centered-container">
+    <h2>使った味噌一覧</h2>
+    <table>
+        <thead>
+            <tr>
+                <th class="item-name">商品名</th>
+                <th class="item-name">画像</th>
+                <th class="item-name">削除</th> 
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in object_list %}
+            <tr>
+                <td><a href="{% url 'accounts:items_update' pk=item.pk %}" class="item-name">{{ item.name }}</a></td> <!-- 編集画面へのリンク -->
+                <td>
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" width="100" height="100">
+                    {% endif %}
+                </td>
+                <td> 
+                    <a href="{% url 'accounts:items_delete' pk=item.pk %}" class="button">削除</a> <!-- 削除リンク -->
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="2">使った味噌はありません。</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
 
 
 
-{% comment %} <!-- used_miso_list.html -->
-{% extends 'base.html' %}
-{% block content %}
-    <h2>Used Miso List</h2>
-    <ul>
-        {% for entry in used_miso_list %}
-            <li>
-                <p>Item: {{ entry.item.name }}</p>
-                <p>Timestamp: {{ entry.timestamp }}</p>
-            </li>
-        {% endfor %}
-    </ul>
-{% endblock %} {% endcomment %}
+
+
+
+
+
+
+

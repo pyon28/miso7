@@ -1,15 +1,202 @@
-/* Reset CSS/*/
-/* body, h1, h2, h3, p, ul, li {
-    margin: 0;
-    padding: 0;
+body {
+  background-color: #fffacd; 
 }
-*/
-/*body {
-    font-family: Arial, sans-serif; /* デフォルトのフォントファミリーを指定 */
-    /* line-height: 1.6; /* デフォルトの行の高さを指定 */
-/* }
-*/
-/* ul {
-    list-style: none; /* リストのデフォルトスタイルを無効化 */
-/* }
- */
+
+
+
+
+.navbar {
+    background-color: #f5deb3; 
+
+}
+
+.navbar-brand {
+  color: #8b4513;
+}
+
+
+
+
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; /* 画面の高さいっぱいに表示する場合 */
+  }
+
+  .center-text {
+    text-align: center;
+  }
+
+
+ 
+h1 {
+    color: #8b4513; 
+}  
+
+h2 {
+  color: #8b4513; 
+}  
+  
+/* フォームのテキストの色を変更 */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form select,
+form textarea {
+    color: #8b4513;
+}
+
+
+
+/* 商品名フィールドのラベルのテキスト色を赤色に変更 */
+label[for="id_name"] {
+  color: #8b4513;
+}
+label[for="id_image"] {
+  color: #8b4513;
+}
+label[for="id_used_miso"] {
+  color: #8b4513;
+}
+label[for="id_thoughts"] {
+  color: #8b4513;
+}
+label[for="id_taste_rating"] {
+  color: #8b4513;
+}
+label[for="id_appearance_rating"] {
+  color: #8b4513;
+}
+
+
+/* Items.nameのテキストを大きくして色を変更 */
+.item-name {
+  font-size: 1.2em; /* 大きさを調整 */
+  color: #8b4513; /* 色を赤色に設定 */
+}
+
+
+
+
+/*ボタンのスタイル */
+.button {
+  background-color: #f5deb3; /* ボタンの背景色 */
+  color: #8b4513; /* テキストの色 */
+  border: none; /* ボーダーをなしに設定 */
+  border-radius: 8px; /* 角を丸くする */
+  padding: 10px 20px; /* パディングを追加 */
+  text-align: center; /* テキストを中央揃え */
+  display: inline-block; /* ボタンをインラインブロック要素にする */
+  text-decoration: none; /* テキストの装飾をなしにする */
+}
+
+/* ファイル選択するボタンのテキストの色を変える */
+input[type="file"]::-webkit-file-upload-button {
+  color: #8b4513; /* テキストの色を黒に設定 */
+}
+input[type="file"]::-moz-file-upload-button {
+  color: #8b4513; /* テキストの色を黒に設定 */
+}
+input[type="file"]::-ms-file-upload-button {
+  color: #8b4513; /* テキストの色を黒に設定 */
+}
+input[type="file"]::-o-file-upload-button {
+  color: #8b4513; /* テキストの色を黒に設定 */
+}
+
+
+/* ファイルが選択されていない場合のテキストの色を変える */
+input[type="file"]::-webkit-input-placeholder {
+  color: #8b4513; /* テキストの色を灰色に設定 */
+}
+input[type="file"]::-moz-placeholder {
+  color: #8b4513; /* テキストの色を灰色に設定 */
+}
+input[type="file"]:-ms-input-placeholder {
+  color: #8b4513; /* テキストの色を灰色に設定 */
+}
+input[type="file"]:-moz-placeholder {
+  color: #8b4513; /* テキストの色を灰色に設定 */
+}
+
+/* ユーザー画面 */
+label[for="id_username"] {
+  color: #8b4513;
+}  
+label[for="id_email"] {
+  color: #8b4513;  
+}
+label[for="id_password"] {
+  color: #8b4513;  
+}
+label[for="id_checkbox"] {
+  color: #8b4513;  
+}
+
+
+/*全体画面*/
+.centered-container {
+  width: 100%; /* 親要素の幅を100%に設定 */
+  display: flex; /* フレックスボックスを使用して中央配置 */
+  justify-content: center; /* 横方向に中央揃え */
+  align-items: center; /* 縦方向に中央揃え */
+  flex-direction: column; /* コンテンツを縦方向に並べる */
+  margin-top: 10px; /* 上側の余白を設定 */
+}
+
+.centered-container h2 {
+  margin-top: 20px; /* h2 要素の上側の余白を0に設定 */
+  margin-bottom: 20px; /* h2 要素の下側の余白を20pxに設定 */
+  text-align: center; /* h2 要素のテキストを中央揃えに設定 */
+}
+
+.centered-container form {
+  margin-bottom: 20px; /* フォーム要素の下側の余白を20pxに設定 */
+  text-align: center; /* フォーム内のテキストを左揃え */
+  max-width: 400px; /* フォームの最大幅を設定 */
+  width: 100%; /* フォームの幅を100%に設定 */
+  font-size: 14px; /* フォントサイズを16pxに設定 */
+}
+
+.centered-container .button {
+  display: inline; /* ボタンをインライン要素に変更 */
+  margin: 10px 10px 0; /* 上部に20pxの余白を設定して、水平方向に中央揃え */
+}
+
+/* 削除画面のボタン */
+.button-return {
+  display: inline-block; /* ボタンをインラインブロック要素に変更 */
+}
+
+/* 編集画面のボタン */
+.button-group {
+  display: flex; /* ボタンを横並びに配置する */
+  justify-content: center; /* ボタンを中央揃えに配置する */
+}
+
+.button {
+  margin: 0 10px; /* ボタン同士の間隔を調整 */
+}
+
+/* 商品・使った味噌一覧 */
+table {
+  border-collapse: collapse; /* セル間のボーダーを重ねる */
+  width: 50%; /* テーブルの幅を100%に設定 */
+}
+
+th, td {
+  border: 1px solid #f5deb3;  /* ボーダーを追加し、灰色に設定 */
+  padding: 8px; /* セルの内側の余白を設定 */
+  text-align: center; /* 文字を左寄せに設定 */
+}
+
+th {
+  background-color: #f5deb3;  /* ヘッダー行の背景色をグレーに設定 */
+}
+
+/* エラーの文字色*/
+.errorlist {
+  color: red;
+}
