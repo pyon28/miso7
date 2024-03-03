@@ -6,6 +6,7 @@ from .views import (
 
 app_name = 'accounts'
 urlpatterns = [
+    path('', HomeView.as_view(), name='home'),
     path('home/', HomeView.as_view(), name='home'),
     path('regist/', RegistUserView.as_view(), name='regist'),
     path('user_login/', UserLoginView.as_view(), name='user_login'),
