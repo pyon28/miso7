@@ -5,6 +5,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from .models import Item
 from django.forms import ClearableFileInput
 
+
+
 class RegistForm(forms.ModelForm):
     username = forms.CharField(label='ユーザー名')
     email = forms.EmailField(label='メールアドレス')
@@ -39,11 +41,12 @@ class UserLoginForm(AuthenticationForm):
    
 
 class ItemForm(forms.ModelForm):
+   
     class Meta:
         model = Item
         fields = ['user', 'name', 'image', 'used_miso', 'thoughts', 'taste_rating', 'appearance_rating',]
         widgets = {
-            'image': ClearableFileInput(attrs={'accept': 'image/*', 'class': 'form-control-file'}),  # ClearableFileInput を使用
+            'image': forms.FileInput(attrs={'accept': 'image/*',}),  
             'user': forms.HiddenInput(),  # user フィールドを非表示にする
         }
 
@@ -55,8 +58,13 @@ class ItemForm(forms.ModelForm):
             self.fields['user'].initial = user.id  # ユーザーIDを初期値として設定する
             self.fields['user'].widget = forms.HiddenInput()  # user フィールドを非表示にする
         
+        
          # used_miso フィールドにチェックボックスを追加
         self.fields['used_miso'].widget = forms.CheckboxInput()
+
+
+
+    
 
 
 

@@ -94,7 +94,7 @@ label[for="id_appearance_rating"] {
 
 /* ファイル選択するボタンのテキストの色を変える */
 input[type="file"]::-webkit-file-upload-button {
-  color: #8b4513; /* テキストの色を黒に設定 */
+  color: #8b4513; /* テキストの色を黒に設定 *//*
 }
 input[type="file"]::-moz-file-upload-button {
   color: #8b4513; /* テキストの色を黒に設定 */
@@ -105,6 +105,9 @@ input[type="file"]::-ms-file-upload-button {
 input[type="file"]::-o-file-upload-button {
   color: #8b4513; /* テキストの色を黒に設定 */
 }
+
+
+
 
 
 /* ファイルが選択されていない場合のテキストの色を変える */
@@ -200,3 +203,44 @@ th {
 .errorlist {
   color: red;
 }
+
+
+
+
+/* ファイル選択ボタン*/
+.custom-file-upload {
+  display: inline-block;
+  padding: 3px 20px;
+  background-color: #f5deb3;
+  color: #8b4513;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+/* 商品名と画像の間の余白を追加 */
+#id_name,
+#id_image_upload,
+#id_used_miso,
+#id_thoughts,
+#id_taste_rating,
+#id_appearance_rating {
+    margin-bottom: 25px; /* 任意の余白を設定 */
+}
+
+ /* 商品登録の画像 */
+#image-container {
+  text-align: center;
+}
+
+.preview-image {
+  max-width: 90px;
+  max-height: 90px;
+  display: none;
+  margin: 0 auto; /* 水平方向に中央揃え */
+
+}
+
+
+
+

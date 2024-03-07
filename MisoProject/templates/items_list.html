@@ -8,6 +8,7 @@
             <tr>
                 <th class="item-name">商品名</th>
                 <th class="item-name">画像</th>
+                <th class="item-name">編集</th>
                 <th class="item-name">削除</th> 
             </tr>
         </thead>
@@ -15,11 +16,18 @@
             {% for item in object_list %}
             <tr>
                 {% comment %} <td><a href="{% url 'accounts:items_detail' item.pk %}" class="item-name">{{ item.name }}</a></td> {% endcomment %}
-                <td><a href="{% url 'accounts:items_update' pk=item.pk %}" class="item-name">{{ item.name }}</a></td> <!-- 編集画面へのリンク -->
+                {% comment %} <td><a href="{% url 'accounts:items_update' pk=item.pk %}" class="item-name">{{ item.name }}</a></td> <!-- 編集画面へのリンク -->  {% endcomment %}
+                <td><span class="item-name">{{ item.name }}</span></td>
+
+
+
                 <td>
                     {% if item.image %}
                     <img src="{{ item.image.url }}" alt="{{ item.name }}" width="100" height="100">
                     {% endif %}
+                </td>
+                <td> 
+                    <a href="{% url 'accounts:items_update' pk=item.pk %}" class="button">編集</a> <!-- 編集リンク -->
                 </td>
                 <td> 
                     <a href="{% url 'accounts:items_delete' pk=item.pk %}" class="button">削除</a> <!-- 削除リンク -->
