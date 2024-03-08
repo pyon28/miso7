@@ -13,6 +13,10 @@ from .forms import ItemForm
 from django.views.generic import UpdateView, DetailView, CreateView, DeleteView, ListView
 from .models import Item
 from django.forms.widgets import FileInput
+from django.views.generic import CreateView, TemplateView
+from .forms import ItemForm  # ItemFormをインポート
+
+
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -20,7 +24,10 @@ class HomeView(TemplateView):
 class RegistUserView(CreateView):
     template_name = 'regist.html'
     form_class = RegistForm
-    success_url = reverse_lazy('accounts:user_login')
+    success_url = reverse_lazy('accounts:regist_user_complete')
+    
+class RegistUserCompleteView(TemplateView):
+    template_name = 'regist_user_complete.html'    
    
 
 class UserLoginView(LoginView):
@@ -69,13 +76,10 @@ class ItemsRegistView(CreateView):
         return kwargs
 
     def get_success_url(self):
-        # return reverse_lazy('accounts:items_list')
-        return reverse_lazy('accounts:item_create_complete')
+        return reverse_lazy('accounts:items_list')
+        
     
- 
-class ItemCreateCompleteView(TemplateView):
-    template_name = 'item_create_complete.html'
-    
+
     
 
 

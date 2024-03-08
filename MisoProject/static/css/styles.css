@@ -38,7 +38,10 @@ h1 {
 h2 {
   color: #8b4513; 
 }  
-  
+h3 {
+  color: #8b4513; 
+}  
+
 /* フォームのテキストの色を変更 */
 form input[type="text"],
 form input[type="email"],
