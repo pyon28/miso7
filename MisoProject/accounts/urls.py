@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     RegistUserView, HomeView, UserLoginView,
     UserLogoutView, UserView, ItemsDetailView, ItemsUpdateView, ItemsDeleteView,
-    ItemsRegistView, ItemsListView, UsedMisoListView, ItemCreateCompleteView) 
+    ItemsRegistView, ItemsListView, UsedMisoListView, RegistUserCompleteView) 
 
 app_name = 'accounts'
 urlpatterns = [
@@ -17,9 +17,10 @@ urlpatterns = [
     path('items_detail/<int:pk>/', ItemsDetailView.as_view(), name='items_detail'),
     path('used_miso_list/', UsedMisoListView.as_view(), name='used_miso_list'),
     path('items_update/<int:pk>/', ItemsUpdateView.as_view(), name='items_update'),
-    path('dutems_delete/<int:pk>/', ItemsDeleteView.as_view(), name='items_delete'), 
-    path('item_create_complete/', ItemCreateCompleteView.as_view(), name='item_create_complete'),
-]
+    path('dutems_delete/<int:pk>/', ItemsDeleteView.as_view(), name='items_delete'),
+    path('regist_user_complete/', RegistUserCompleteView.as_view(), name='regist_user_complete'), 
+   
+    ] 
 
 
    
