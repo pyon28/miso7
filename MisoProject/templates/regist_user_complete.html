@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="centered-container">
+<div class="centered-container" style="margin-top: 200px;">
     <form method="post" style="display: inline-block;">
         <div class="center-text"> 
-            <h3 style="margin: 200px 0; text-align: center;">ユーザー登録が完了しました！</h3>
+            <h3 style="margin: 0 auto; text-align: center;">ユーザー登録が完了しました！</h3>
+            <h4 style="margin: 30px; auto; text-align: center;">左上の「ログイン」ボタンより<br>お願いします</h4>
             {% comment %} <a href="{% url 'accounts:user_login' %}" class="button"></a> {% endcomment %}
         </div>
     </form>

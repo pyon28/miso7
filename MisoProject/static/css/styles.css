@@ -38,7 +38,7 @@ h1 {
 h2 {
   color: #8b4513; 
 }  
-h3 {
+h3,h4 {
   color: #8b4513; 
 }  
 
@@ -247,3 +247,28 @@ th {
 
 
 
+#image-container {
+  text-align: center;
+}
+
+.preview-image {
+  max-width: 50px;
+  max-height: 50px;
+  display: none;
+  margin: 0 auto; /* 水平方向に中央揃え */
+}
+
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #f5deb3;
+  color: #8b4513;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* .custom-file-upload:hover {
+  background-color: #2980b9; */
+/* } */

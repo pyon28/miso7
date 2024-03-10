@@ -4,11 +4,48 @@
     <h2>商品登録</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        <label for="id_name">商品名:</label>
+        {{ form.name }}
+        <br>
+        <label for="id_image">画像:</label>
+        <label for="id_image" class="custom-file-upload">ファイルの選択</label>
+       <input id="id_image" type="file" name="image" onchange="previewImage(event)" style="display:none;">   
+        <br>
+        <div id="image-container" style="text-align: center;">
+            <img id="preview" src="#" alt="選択された画像" style="max-width: 100px; max-height: 100px; display: none; margin: 0 auto;"> 
+        </div>
+
+        <br>
+        <label for="id_used_miso">使った味噌:</label>
+        {{ form.used_miso }}
+        <br>
+        <label for="id_thoughts">メモ・感想:</label>
+        {{ form.thoughts }}
+        <br>
+        <label for="id_taste_rating">味の評価:</label>
+        {{ form.taste_rating }}
+        <br>
+        <label for="id_appearance_rating">見た目の評価:</label>
+        {{ form.appearance_rating }}
+        <br>
         <button type="submit" class="button">登録</button>
     </form>
 </div>
+<script>
+    function previewImage(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+            var img = document.getElementById('preview');
+            img.src = reader.result;
+            img.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
 {% endblock %} 
+
+
 
 
 
@@ -18,63 +55,11 @@
     <h2>商品登録</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="id_name">商品名:</label>
-        <input type="text" name="name" id="id_name" value="{{ form.name.value }}" />
-        <br>
-        <label for="id_image">画像:</label>
-        {{ form.image }}
-        <br>
-        <label for="id_used_miso">使った味噌:</label>
-        <input type="checkbox" name="used_miso" id="id_used_miso" {% if form.used_miso.value %}checked{% endif %} />
-        <br>
-        <label for="id_thoughts">メモ・感想:</label>
-        <textarea name="thoughts" id="id_thoughts">{{ form.thoughts.value }}</textarea>
-        <br>
-        <label for="id_taste_rating">味の評価:</label>
-        <select name="taste_rating" id="id_taste_rating">
-            {% for value, display_name in form.fields.taste_rating.choices %}
-                <option value="{{ value }}" {% if value == form.taste_rating.value %}selected{% endif %}>{{ display_name }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <label for="id_appearance_rating">見た目の評価:</label>
-        <select name="appearance_rating" id="id_appearance_rating">
-            {% for value, display_name in form.fields.appearance_rating.choices %}
-                <option value="{{ value }}" {% if value == form.appearance_rating.value %}selected{% endif %}>{{ display_name }}</option>
-            {% endfor %}
-        </select>
-        <br>
+        {{ form.as_p }}
         <button type="submit" class="button">登録</button>
     </form>
-    <div class="preview-container">
-        <img id="preview" src="#" alt="プレビュー画像">
-    </div>
 </div>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const fileInput = document.getElementById("id_image");
-    const previewImage = document.getElementById("preview");
-
-    fileInput.addEventListener("change", function(event) {
-        const file = event.target.files[0]; // 選択されたファイルを取得
-        if (file) {
-            const reader = new FileReader(); // ファイルを読み込むためのFileReaderオブジェクトを作成
-            reader.onload = function(e) {
-                previewImage.src = e.target.result; // プレビュー用のimg要素のsrc属性に読み込んだファイルのデータURLをセット
-                previewImage.style.display = "block"; // プレビュー用のimg要素を表示
-            }
-            reader.readAsDataURL(file); // ファイルを読み込む
-        }
-    });
-
-    // ページ読み込み時にファイル選択ダイアログが開くようにする
-    fileInput.click();
-});
-</script>
-{% endblock %} {% endcomment %}
-
-
-
+{% endblock %}  {% endcomment %}
 
 
 
