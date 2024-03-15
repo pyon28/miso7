@@ -38,34 +38,55 @@ class RegistForm(forms.ModelForm):
 class UserLoginForm(AuthenticationForm):
     username = forms.EmailField(label='メールアドレス')
     password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
+
+# name = forms.CharField(label='商品名', )
+    # image = forms.ImageField(label='画像')  
+    # used_miso = forms.BooleanField(label='使った味噌')
+    # thoughts = forms.CharField(label='メモ・感想', widget=forms.Textarea)
+    # taste_rating = forms.IntegerField(label='味')
+    # appearance_rating = forms.IntegerField(label='見た目')
    
 
+# class ItemForm(forms.ModelForm):
+#     class Meta:
+#         model = Item
+#         fields = ['user', 'name', 'image', 'used_miso', 'thoughts', 'taste_rating', 'appearance_rating',]
+#         widgets = {
+#             'image': forms.FileInput(attrs={'accept': 'image/*',}), 
+#             'user': forms.HiddenInput(),  # user フィールドを非表示にする
+#         }
+
+#     def __init__(self, *args, **kwargs):
+#         user = kwargs.pop('user', None)
+#         super(ItemForm, self).__init__(*args, **kwargs)
+#         if user:
+#              # ユーザーが指定されている場合は、フォーム内の user フィールドにそのユーザーをセット
+#             self.fields['user'].initial = user.id  # ユーザーIDを初期値として設定する
+#             self.fields['user'].widget = forms.HiddenInput()  # user フィールドを非表示にする
+        
+        
+#          # used_miso フィールドにチェックボックスを追加
+#         self.fields['used_miso'].widget = forms.CheckboxInput()
+
+
 class ItemForm(forms.ModelForm):
-   
     class Meta:
         model = Item
-        fields = ['user', 'name', 'image', 'used_miso', 'thoughts', 'taste_rating', 'appearance_rating',]
+        fields = ['name', 'image', 'used_miso', 'thoughts', 'taste_rating', 'appearance_rating']
         widgets = {
-            'image': forms.FileInput(attrs={'accept': 'image/*',}),  
-            'user': forms.HiddenInput(),  # user フィールドを非表示にする
+            'image': forms.FileInput(attrs={'accept': 'image/*'}), 
         }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super(ItemForm, self).__init__(*args, **kwargs)
         if user:
-             # ユーザーが指定されている場合は、フォーム内の user フィールドにそのユーザーをセット
-            self.fields['user'].initial = user.id  # ユーザーIDを初期値として設定する
-            self.fields['user'].widget = forms.HiddenInput()  # user フィールドを非表示にする
-        
-        
-         # used_miso フィールドにチェックボックスを追加
-        self.fields['used_miso'].widget = forms.CheckboxInput()
-
-
+            self.fields['user'].initial = user  # ユーザーを直接渡す
+            self.fields['user'].widget = forms.HiddenInput()
 
     
-
+         #used_miso フィールドにチェックボックスを追加
+        self.fields['used_miso'].widget = forms.CheckboxInput()
 
 
         
