@@ -2,36 +2,87 @@
 {% block content %}
 <div class="centered-container">
     <h2>商品登録</h2>
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data"> 
         {% csrf_token %}
+        
         <label for="id_name">商品名:</label>
         {{ form.name }}
+        {% if form.name.errors %}
+            <ul class="errors">
+                {% for error in form.name.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <br>
+        
         <label for="id_image">画像:</label>
         <label for="id_image" class="custom-file-upload">ファイルの選択</label>
-       <input id="id_image" type="file" name="image" onchange="previewImage(event)" style="display:none;">   
+        <input id="id_image" type="file" name="image" onchange="previewImage(event)" style="display:none;">   
+        {% if form.image.errors %}
+            <ul class="errors">
+                {% for error in form.image.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <br>
+        
         <div id="image-container" style="text-align: center;">
             <img id="preview" src="#" alt="選択された画像" style="max-width: 100px; max-height: 100px; display: none; margin: 0 auto;"> 
         </div>
 
         <br>
+        
         <label for="id_used_miso">使った味噌:</label>
         {{ form.used_miso }}
+        {% if form.used_miso.errors %}
+            <ul class="errors">
+                {% for error in form.used_miso.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <br>
+        
         <label for="id_thoughts">メモ・感想:</label>
         {{ form.thoughts }}
+        {% if form.thoughts.errors %}
+            <ul class="errors">
+                {% for error in form.thoughts.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <br>
+        
         <label for="id_taste_rating">味の評価:</label>
         {{ form.taste_rating }}
+        {% if form.taste_rating.errors %}
+            <ul class="errors">
+                {% for error in form.taste_rating.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <br>
+        
         <label for="id_appearance_rating">見た目の評価:</label>
         {{ form.appearance_rating }}
+        {% if form.appearance_rating.errors %}
+            <ul class="errors">
+                {% for error in form.appearance_rating.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         <br>
+        
         <button type="submit" class="button">登録</button>
     </form>
-</div>
+</div> 
 <script>
+    // 選択された画像をプレビューする関数
     function previewImage(event) {
         var input = event.target;
         var reader = new FileReader();
@@ -42,47 +93,8 @@
         };
         reader.readAsDataURL(input.files[0]);
     }
-</script>
-{% endblock %} 
-
-
-
-
-
-{% comment %} {% extends 'base.html' %}
-{% block content %}
-<div class="centered-container">
-    <h2>商品登録</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="button">登録</button>
-    </form>
-</div>
-{% endblock %}  {% endcomment %}
-
-
-
-
-
-
-
-
-
-
- 
- 
- 
-  
-
-
-
-
-
-
-
-
-
+</script> 
+{% endblock %}
 
 
 

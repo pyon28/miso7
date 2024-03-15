@@ -4,6 +4,69 @@
     <h2>商品の編集</h2>
     <form method="post" enctype="multipart/form-data" style="display: inline-block;">
         {% csrf_token %}
+        
+        <label for="id_name">商品名:</label>
+        {{ form.name }}
+        <br>
+        
+        <label for="id_image">画像:</label>
+        <label for="id_image" class="custom-file-upload">ファイルの選択</label>
+        <input id="id_image" type="file" name="image" onchange="previewImage(event)" style="display:none;">
+        <div id="image-container" style="text-align: center;">
+            <img id="preview" src="{{ form.instance.image.url }}" alt="登録されている画像" style="max-width: 100px; max-height: 100px;">
+        </div>
+        <br>
+        
+        <label for="id_used_miso">使った味噌:</label>
+        {{ form.used_miso }}
+        <br>
+        
+        <label for="id_thoughts">メモ・感想:</label>
+        {{ form.thoughts }}
+        <br>
+        
+        <label for="id_taste_rating">味の評価:</label>
+        {{ form.taste_rating }}
+        <br>
+        
+        <label for="id_appearance_rating">見た目の評価:</label>
+        {{ form.appearance_rating }}
+        <br>
+        
+        <div class="button-group">
+            <button type="submit" class="button">登録</button>
+            <a href="{% url 'accounts:items_list' %}" class="button-inline button">戻る</a>
+        </div>
+    </form> 
+</div>
+
+<script>
+    // 登録された画像をプレビューする
+    function previewImage(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function(){
+            var img = document.getElementById('preview');
+            img.src = reader.result;
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+{% comment %} {% extends 'base.html' %}
+{% block content %}
+<div class="centered-container">
+    <h2>商品の編集</h2>
+    <form method="post" enctype="multipart/form-data" style="display: inline-block;">
+        {% csrf_token %}
         {{ form.as_p }}
         <div class="button-group">
             <button type="submit" class="button">登録</button>
@@ -11,4 +74,4 @@
         </div>
     </form> 
 </div>
-{% endblock %}
+{% endblock %} {% endcomment %}
