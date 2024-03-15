@@ -16,7 +16,9 @@ from django.forms.widgets import FileInput
 from django.views.generic import CreateView, TemplateView
 from .forms import ItemForm  # ItemFormをインポート
 
-
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+import logging
 
 class HomeView(TemplateView):
     template_name = 'home.html'
@@ -65,26 +67,41 @@ class UserView(LoginRequiredMixin, TemplateView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
     
-    
-class ItemsRegistView(CreateView):
-    template_name = 'item_regist.html'
-    form_class = ItemForm
-    
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # ログインしたユーザー情報をフォームに渡す
-        return kwargs
-
-    def get_success_url(self):
-        return reverse_lazy('accounts:items_list')
-        
-    
-
-    
 
 
-
+# class ItemsRegistView(CreateView):
+#     template_name = 'item_regist.html'
+#     form_class = ItemForm
     
+#     def get_form_kwargs(self):
+#         kwargs = super().get_form_kwargs()
+#         kwargs['user'] = self.request.user # ログインしたユーザー情報をフォームに渡す
+#         return kwargs
+    
+#     def get_success_url(self):
+#         return reverse_lazy('accounts:items_list')
+    
+    
+
+
+def item_regist_view(request):
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
+            print("Form is valid. Cleaned data:", form.cleaned_data)
+            if item.used_miso:
+                return HttpResponseRedirect(reverse('accounts:used_miso_list'))
+            else:
+                return HttpResponseRedirect(reverse('accounts:items_list'))
+        else:
+            print("Form is not valid. Errors:", form.errors)
+    else:
+        form = ItemForm()
+
+    return render(request, 'item_regist.html', {'form': form})  
 
     
 class ItemsListView(ListView):
@@ -109,8 +126,8 @@ class ItemsListView(ListView):
         # used_miso_list に表示するアイテムリスト
         context['used_miso_list'] = checked_items
         return context
-
-
+   
+   
     
 class UsedMisoListView(ListView):
     template_name = 'used_miso_list.html'
@@ -139,6 +156,21 @@ class ItemsDeleteView(DeleteView):
    
    
 
+# class ItemsUpdateView(UpdateView):
+#     template_name = 'items_update.html'
+#     model = Item
+#     fields = ('name', 'image', 'used_miso', 'thoughts', 'taste_rating', 'appearance_rating',)
+#     success_url = reverse_lazy('accounts:items_list')
+ 
+#     def form_valid(self, form):
+#         item = form.save(commit=False)
+#         if 'image' in self.request.FILES:
+#             item.image = self.request.FILES['image']
+#         item.save()
+#         return super().form_valid(form)
+    
+    
+    
 class ItemsUpdateView(UpdateView):
     template_name = 'items_update.html'
     model = Item
@@ -150,8 +182,7 @@ class ItemsUpdateView(UpdateView):
         if 'image' in self.request.FILES:
             item.image = self.request.FILES['image']
         item.save()
-        return super().form_valid(form)
-    
-    
-    
-
+        if item.used_miso:
+            return HttpResponseRedirect(reverse('accounts:used_miso_list'))
+        else:
+            return HttpResponseRedirect(self.get_success_url())
